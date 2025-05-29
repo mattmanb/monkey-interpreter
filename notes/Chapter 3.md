@@ -86,3 +86,10 @@ Return statements stop the processing within a function, and should evaluate to 
 
 Having an issue with the return statement tests. `return 5` returns \<nil>, but RETURN or any other version of `return` with at least 1 uppercase letter works fine... The parser tests aren't passing under `TestReturnStatements` and `TestReturnStatement`...
 - Left off at the top of page 130
+- It was an issue in `parserReturnStatement`
+
+Made a few changes to the Eval program to call two new functions that will account for nested return statements. 
+- `evalProgram` and `evalBlockStatement` will now loop over the `statements` inside of an `ast.Program` or `ast.BlockStatement` and check to see if it is an `object.ReturnValue`... If it is then the result of that statement is returned. Otherwise, the last statement in the Program/Block is returned. 
+- This reminds me of Rust, since the last statement/value in a function is the return value. There won't be an error if the last line of a program/block is just `7`, the program/block will return 7.
+
+## 3.8 Error Handling
