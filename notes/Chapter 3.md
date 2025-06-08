@@ -93,3 +93,20 @@ Made a few changes to the Eval program to call two new functions that will accou
 - This reminds me of Rust, since the last statement/value in a function is the return value. There won't be an error if the last line of a program/block is just `7`, the program/block will return 7.
 
 ## 3.8 Error Handling
+To handle errors, we do similar logic to how return statements are handled. They both exit evaluated when they occur, but the error is going to give a message instead of a value.
+
+An error object gets implemented, then that will be used to convey the error.
+
+Some new code was added in a few functions to account for the possibility that an error object can now be returned... Instead of continuing execution, the current error object gets returned and stops future execution.
+
+## 3.9 Bindings and the Environment
+"Binding" refers to assignment of a value to an identifier.
+- Identifiers that have set values should evaluate to the set value
+- Identifiers that aren't set should evaluate to an error
+
+New case for let statements was added, but how will the values be stored? I think it'll be a hash map but we'll see...
+- Using 'environments', which are similar to hash maps
+Making a wrapper class that maps a string key to an Object value (our implementation of an Object)
+- We have to add the `env` map object to Eval so stored variables can be accessed, so every call to Eval needs to be changed to include the `env` variable
+
+## Functions and Function Calls
