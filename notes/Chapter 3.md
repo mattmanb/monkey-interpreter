@@ -110,3 +110,45 @@ Making a wrapper class that maps a string key to an Object value (our implementa
 - We have to add the `env` map object to Eval so stored variables can be accessed, so every call to Eval needs to be changed to include the `env` variable
 
 ## Functions and Function Calls
+Function literal tokens are already defined in `AST.go`, but now we made a `Function` object in our objects class. 
+- Has a body and array of parameters
+- Added some tests
+
+Need support for defining a function, then calling it later in the monkey code (its logic must be stored somewhere)
+- The tests added do many things: 
+	1. return values implicitly
+	2. return values using return statements
+	3. using parameters in expressions (passed in variables)
+	4. multiple parameters
+	5. evaluating arguments before passing them into the function
+	6. Identifiers evaluating to a function object
+	7. Identifiers evaluating to a function literal
+In order to call a function, there a few steps that need to be taken:
+1. Evaluate parameters 
+	- Stop if there are any errors
+2. Evaluate a block statement (the function logic)
+	- The environment where the function is being called should NEVER be overwritten by changes in the function!
+	- To do this, we "extend" the environment- where we wrap the current environment in a fresh new one, and if a value is queried in the wrapper environment and it doesn't exist, then we try the enclosed environment instead. 
+	- We wrote an `applyFunction` function which checks to make sure that there is an `*object.Function` and converts the `fn` parameter to an `*object.Function` reference to gain access to the functions environment and body fields (object.Object does not define these)
+	- `extendFunctionEnv` creates a new `*object.Environment` that is enclosed in the function's environment. This function binds the parameters of the function call to this environment
+3. Unwrap the return value and return it
+
+**Higher order functions** are functions that either return other functions or take them in as parameters
+- In monkey, environments are kept with the function literals that created them. So the scope of the function is saved and can be reused.
+- With the logic currently enacted, Monkey supports functions as parameters and return values (closures)
+
+## 3.11 - Garbage Collector
+I have been tricked! `Go` has a garbage collector and it would clear unused objects during program execution. i.e.
+```GO
+let counter = fn(x) {
+	if(x > 100) {
+		return true
+	} else {
+		let foobar = 9999
+		counter(x + 1)
+	}
+} 
+
+counter(0);
+```
+
