@@ -52,6 +52,9 @@ func (l *Lexer) NextToken() token.Token {
 	case '\000': // null terminating character is an octal in go (for some reason)
 		tok.Literal = ""
 		tok.Type = token.EOF
+	case '"':
+		tok.Type = token.STRING
+		tok.Literal = l.readString()
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
@@ -85,6 +88,17 @@ func (l *Lexer) readNumber() string {
 	position := l.position
 	for isDigit(l.ch) {
 		l.readChar()
+	}
+	return l.input[position:l.position]
+}
+
+func (l *Lexer) readString() string {
+	position := l.position + 1
+	for {
+		l.readChar()
+		if (l.ch == '"' || l.ch == 0) {
+			break
+		}
 	}
 	return l.input[position:l.position]
 }
