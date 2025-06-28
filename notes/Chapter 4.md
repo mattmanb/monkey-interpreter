@@ -6,3 +6,11 @@ Adding them will be must easier because we already created the structure of the 
 
 ## Strings
 Pretty much identical to integers, would be harder of Strings weren't inherently supported in Go
+
+## Built in functions
+This section essentially adds supports for inherent functions in the Monkey language like 'len' for a string
+- Implementation defines the method and creates a new object basically identical to object.(function)
+- The check for if the function is defined also looks for built in functions
+
+## Arrays
+
