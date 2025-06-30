@@ -13,4 +13,4 @@ This section essentially adds supports for inherent functions in the Monkey lang
 - The check for if the function is defined also looks for built in functions
 
 ## Arrays
-
+ended on "Adding Built-In Functions for Arrays" on the second half of page 177
